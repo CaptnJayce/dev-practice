@@ -1,10 +1,3 @@
-/*
- * Object with radius
- *   - Object should turn green/red depending on if player is in radius or not 
- *   - No colliders - use actual math
- *   - Explosion.pgn!!!!!
- */
-
 #include <raylib.h>
 #include <math.h>
 
@@ -28,6 +21,9 @@ struct Barrel {
   bool playerNear;
 };
 
+// Calculates distance between two vectors
+// Subtract the second Vectors axis' with the first to get Distance
+// return square root cause pythagoraease said so
 float Distance(Vector2 Player, Vector2 Barrel) {
     float dx = Barrel.x - Player.x;
     float dy = Barrel.y - Player.y;
@@ -72,22 +68,19 @@ int main() {
     ClearBackground(RAYWHITE);
     DrawRectangle(p.pos.x, p.pos.y, p.w, p.h, p.colour);
 
+    // get the distance between player and barrel
     float dist = Distance(p.pos, b.pos);
 
+    // if distance is less than or equal to the barrel's radius
     if (dist <= b.radius) {
-      b.playerNear = true;
+      b.colour = RED;
     } else {
-      b.playerNear = false;
+      b.colour = GREEN;
+      // imagine there's a really cool and highly detailed explosion animation here
     }
 
-    if (b.playerNear == false) {
-      DrawCircleLines(b.pos.x + (b.w / 2), b.pos.y + (b.h / 2), b.radius, b.colour);
-      DrawRectangle(b.pos.x, b.pos.y, b.w, b.h, b.colour);
-    }
-    if (b.playerNear == true) {
-      DrawCircleLines(b.pos.x + (b.w / 2), b.pos.y + (b.h / 2), b.radius, RED);
-      DrawRectangle(b.pos.x, b.pos.y, b.w, b.h, RED);
-    }
+    DrawCircleLines(b.pos.x + (b.w / 2), b.pos.y + (b.h / 2), b.radius, b.colour);
+    DrawRectangle(b.pos.x, b.pos.y, b.w, b.h, b.colour);
 
     EndDrawing();
   }
